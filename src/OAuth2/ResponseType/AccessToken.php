@@ -39,6 +39,18 @@ class AccessToken implements AccessTokenInterface
         ), $config);
     }
 
+    /**
+     * Set access token lifetime
+     *
+     * @param int $seconds Time before access token expires
+     * @return \OAuth2\ResponseType\AccessToken
+     */
+    public function setAccessTokenLifetime($seconds)
+    {
+        $this->config['access_lifetime'] = (int) $seconds;
+        return $this;
+    }
+
     public function getAuthorizeResponse($params, $user_id = null)
     {
         // build the URL to redirect to
