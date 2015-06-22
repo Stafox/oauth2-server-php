@@ -97,10 +97,6 @@ class HttpBasic implements ClientAssertionTypeInterface
      */
     public function getClientCredentials(RequestInterface $request, ResponseInterface $response = null)
     {
-        if (!is_null($request->headers('PHP_AUTH_USER')) && !is_null($request->headers('PHP_AUTH_PW'))) {
-            return array('client_id' => $request->headers('PHP_AUTH_USER'), 'client_secret' => $request->headers('PHP_AUTH_PW'));
-        }
-
         if ($this->config['allow_credentials_in_request_body']) {
             // Using POST for HttpBasic authorization is not recommended, but is supported by specification
             if (!is_null($request->request('client_id'))) {
@@ -111,6 +107,10 @@ class HttpBasic implements ClientAssertionTypeInterface
 
                 return array('client_id' => $request->request('client_id'), 'client_secret' => $request->request('client_secret'));
             }
+        }
+
+        if (!is_null($request->headers('PHP_AUTH_USER')) && !is_null($request->headers('PHP_AUTH_PW'))) {
+            return array('client_id' => $request->headers('PHP_AUTH_USER'), 'client_secret' => $request->headers('PHP_AUTH_PW'));
         }
 
         if ($response) {
